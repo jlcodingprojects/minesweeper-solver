@@ -10,7 +10,7 @@ Highlights:
  - Combinatoric yield
    - Extension method to return all combinations of a certain length of items in a list
    - This is used to check the various possible solutions for a given clue and calculate whether each state is valid
-     - 
+   
  - Matrix interface
    - Stores and enumerates tiles
    - Has default implementation which simply stores the tiles
