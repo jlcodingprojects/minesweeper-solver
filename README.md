@@ -1,4 +1,4 @@
-## Mine Sweeper solver
+## Minesweeper solver
 
 Features:
  - Uses screen capture to detect board
