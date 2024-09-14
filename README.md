@@ -10,7 +10,7 @@ Highlights:
  - Combinatoric yield
    - Extension method to return all combinations of a certain length of items in a list
    - This is used to check the various possible solutions for a given clue and calculate whether each state is valid
-     - 
+   
  - Matrix interface
    - Stores and enumerates tiles
    - Has default implementation which simply stores the tiles
@@ -27,6 +27,11 @@ Highlights:
    - Consolidate the calls to get safe/dangerous/ambivalent clues. No need to iterate the entire array 3 times.
    - *Calculating safe tiles requires knowledge of dangerous tiles but some of that could be done in the same call*
    - Currently it recalculates the entire board for each permutation of each clue. Can optimise by only recalculating surrounding 15 tiles and only recalculating if there are clues in the surrounding 15 tiles.
+
+### Excerpt
+
+![image](https://github.com/user-attachments/assets/8e6130db-9202-4ccb-a315-273925a2cc20)
+
 
 
 ### Caveats
