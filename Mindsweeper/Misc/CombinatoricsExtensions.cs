@@ -7,7 +7,7 @@
             var list = source.ToList();
             int count = list.Count;
 
-            // need to make this a double if over 32 items but that's fked anyway
+            // need to make this a double if over 32 items but that's not possible here since minesweeper can only have 8
             for (int i = 0; i < 1 << count; i++)
             {
                 // if number of flags in bitmask is not requiredCount then no need to return that combination
