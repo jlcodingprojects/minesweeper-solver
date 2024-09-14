@@ -1,22 +1,23 @@
 ## Mine Sweeper solver
 
 Features:
- - Use screen capture to detect board
- - Automatically click on all safe/dangerous squares
+ - Uses screen capture to detect board
+ - Automatically click on safe/dangerous squares
 
 Highlights:
- - Can solve solutions which require 2 clues rather than just 1
+ - Can solve solutions which depend on multiple clues
    - No support for more than 2 clues yet
  - Combinatoric yield
    - Extension method to return all combinations of a certain length of items in a list
    - This is used to check the various possible solutions for a given clue and calculate whether each state is valid
- - Proxy matrix class
-   - Layer above the base matrix representation to temporarily alter various values
-   - Used when evaluating possible solutions to calculate the state without messing with the actual matrix data
+     - 
+ - Matrix interface
+   - Stores and enumerates tiles
+   - Has default implementation which simply stores the tiles
+   - Has proxy implementation which intercepts requests for tiles and can temporarily replace them with a different value
+     - Used when evaluating possible solutions to calculate the state without messing with the actual matrix data
 
 ![cropped](https://github.com/user-attachments/assets/ebec2e77-e4bc-4c7f-bc9e-4b8e8744a7d2)
-
-
 
 ### Todo
 
