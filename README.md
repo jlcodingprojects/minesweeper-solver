@@ -14,7 +14,8 @@ Highlights:
    - Layer above the base matrix representation to temporarily alter various values
    - Used when evaluating possible solutions to calculate the state without messing with the actual matrix data
 
-![mindsweeper](https://github.com/user-attachments/assets/af4486ba-a58d-4bf6-9971-3a77f2627379)
+![cropped](https://github.com/user-attachments/assets/ebec2e77-e4bc-4c7f-bc9e-4b8e8744a7d2)
+
 
 
 ### Todo
