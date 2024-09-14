@@ -28,6 +28,11 @@ Highlights:
    - *Calculating safe tiles requires knowledge of dangerous tiles but some of that could be done in the same call*
    - Currently it recalculates the entire board for each permutation of each clue. Can optimise by only recalculating surrounding 15 tiles and only recalculating if there are clues in the surrounding 15 tiles.
 
+### Excerpt
+
+![image](https://github.com/user-attachments/assets/8e6130db-9202-4ccb-a315-273925a2cc20)
+
+
 
 ### Caveats
 
