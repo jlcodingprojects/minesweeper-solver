@@ -5,7 +5,7 @@ namespace Mindsweeper
 {
     internal static class AlgorithmicSolver
     {
-        public static List<Point> FindAllDangerousSquares(IMatrix matrix)
+        public static List<Point> FindAllDangerousTiles(IMatrix matrix)
         {
             List<Point> results = new List<Point>();
             int rows = matrix.Width;
@@ -31,7 +31,7 @@ namespace Mindsweeper
             return results.Distinct().ToList();
         }
 
-        public static List<Point> FindAllSafeSquares(IMatrix matrix)
+        public static List<Point> FindAllSafeTiles(IMatrix matrix)
         {
             List<Point> results = new List<Point>();
             int rows = matrix.Width;
@@ -59,7 +59,7 @@ namespace Mindsweeper
             return results;
         }
 
-        public static List<Point> GetAmbivalentClueSquares(IMatrix matrix)
+        public static List<Point> GetAmbivalentClueTiles(IMatrix matrix)
         {
             List<Point> results = new List<Point>();
             int rows = matrix.Width;

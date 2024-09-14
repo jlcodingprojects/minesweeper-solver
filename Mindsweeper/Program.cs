@@ -7,6 +7,7 @@ namespace Mindsweeper
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Make sure you have minesweeper open on your first monitor and nothing covering the board.");
             Console.WriteLine("Press any key to start");
             Console.ReadKey();
 
@@ -15,7 +16,7 @@ namespace Mindsweeper
                 GoSolve();
                 if (!TryComplexSolve())
                 {
-                    Console.WriteLine("Finished all that i can do. Press any key to continue if fixed mistakes.");
+                    Console.WriteLine("Unable to continue. Please manually solve another clue or two then continue.");
                     Console.ReadKey();
                 }
             }
@@ -26,14 +27,14 @@ namespace Mindsweeper
         {
             var solver = new BoardEngine();
 
-            var safe = solver.GetSafeSquares();
-            var dangerous = solver.GetDangerousSquares();
+            var safe = solver.GetSafeTiles();
+            var dangerous = solver.GetDangerousTiles();
 
             if (safe.Count == 0 && dangerous.Count == 0)
             {
-                var posX = (Random.NextInt64() % solver.Width) - 5 + 1;
-                var posY = (Random.NextInt64() % solver.Height) - 5 + 1;
-                solver.ClickAllSquares(
+                var posX = (Random.NextInt64() % (solver.Width - 5)) + 2;
+                var posY = (Random.NextInt64() % (solver.Height - 5)) + 2;
+                solver.ClickAllTiles(
                     new List<Point> { new Point((int)posX, (int)posY), },
                     Clicker.ClickType.Left);
             }
@@ -43,17 +44,17 @@ namespace Mindsweeper
 
             while (safeloop > 0)
             {
-                dangerous = solver.GetDangerousSquares();
+                dangerous = solver.GetDangerousTiles();
                 var proxy = dangerous.Select(c => new KeyValuePair<Point, int>(c, BombValues.Bomb));
                 // can only calculate safe after we've calculated dangerous
                 // but dont want to waste time clicking all bombs then screen grabbing and recalculating etc
-                safe = solver.UseProxy(proxy).GetSafeSquares();
+                safe = solver.UseProxy(proxy).GetSafeTiles();
                 solver.ClearProxy();
 
                 if (safe.Count == 0 && dangerous.Count == 0)
                     safeloop = 0;
-                solver.ClickAllSquares(safe, Clicker.ClickType.Left);
-                solver.ClickAllSquares(dangerous, Clicker.ClickType.Right);
+                solver.ClickAllTiles(safe, Clicker.ClickType.Left);
+                solver.ClickAllTiles(dangerous, Clicker.ClickType.Right);
 
                 safeloop--;
             }
@@ -64,7 +65,7 @@ namespace Mindsweeper
             var solver = new BoardEngine();
             bool foundAnswers = false;
 
-            var clues = solver.GetAmbivalentClueSquares();
+            var clues = solver.GetAmbivalentClueTiles();
 
             // for each clue, create proxy of all possible combinations
             // then solve surround clues against each proxy
@@ -91,8 +92,8 @@ namespace Mindsweeper
                     if (!isValid)
                         continue;
 
-                    var dangerous = solver.GetDangerousSquares();
-                    var safe = solver.GetSafeSquares();
+                    var dangerous = solver.GetDangerousTiles();
+                    var safe = solver.GetSafeTiles();
 
                     if (initialised)
                     {
@@ -111,8 +112,8 @@ namespace Mindsweeper
 
                 if (safeFound.Count != 0 || dangerousFound.Count != 0)
                 {
-                    solver.ClickAllSquares(dangerousFound.ToList(), Clicker.ClickType.Right);
-                    solver.ClickAllSquares(safeFound.ToList(), Clicker.ClickType.Left);
+                    solver.ClickAllTiles(dangerousFound.ToList(), Clicker.ClickType.Right);
+                    solver.ClickAllTiles(safeFound.ToList(), Clicker.ClickType.Left);
                     foundAnswers = true;
                 }
             }

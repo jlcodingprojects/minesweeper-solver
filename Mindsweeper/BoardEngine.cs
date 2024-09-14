@@ -69,32 +69,32 @@ namespace Mindsweeper
             }
         }
 
-        public List<Point> GetSafeSquares()
+        public List<Point> GetSafeTiles()
         {
             EnsureMatrixCurrent();
-            return AlgorithmicSolver.FindAllSafeSquares(_matrix);
+            return AlgorithmicSolver.FindAllSafeTiles(_matrix);
         }
 
-        public List<Point> GetDangerousSquares()
+        public List<Point> GetDangerousTiles()
         {
             EnsureMatrixCurrent();
-            return AlgorithmicSolver.FindAllDangerousSquares(_matrix);
+            return AlgorithmicSolver.FindAllDangerousTiles(_matrix);
         }
 
-        public List<Point> GetAmbivalentClueSquares()
+        public List<Point> GetAmbivalentClueTiles()
         {
             EnsureMatrixCurrent();
-            return AlgorithmicSolver.GetAmbivalentClueSquares(_matrix);
+            return AlgorithmicSolver.GetAmbivalentClueTiles(_matrix);
         }
 
-        public void ClickAllSquares(List<Point> squares, ClickType clickType)
+        public void ClickAllTiles(List<Point> tiles, ClickType clickType)
         {
             matrixUpToDate = false;
 
-            foreach (var square in squares)
+            foreach (var tile in tiles)
             {
-                Clicker.ClickAt(_boardPosition.X + (square.X * _blockSize) + 8,
-                    _boardPosition.Y + (square.Y * _blockSize) + 8,
+                Clicker.ClickAt(_boardPosition.X + (tile.X * _blockSize) + 8,
+                    _boardPosition.Y + (tile.Y * _blockSize) + 8,
                     clickType);
 
                 Thread.Sleep(20);
@@ -200,10 +200,6 @@ namespace Mindsweeper
                         var centrePixel = bitmap.GetPixel(_boardPosition.X + (x * _blockSize) + offset, _boardPosition.Y + (y * _blockSize) + offset);
                         var topPixel = bitmap.GetPixel(_boardPosition.X + (x * _blockSize) + 4, _boardPosition.Y + (y * _blockSize));
                         _matrix[x, y] = ParsePixel(centrePixel);
-                        if (ParsePixel(centrePixel) == -2)
-                        {
-
-                        }
                         if (_matrix[x, y] == BombValues.Safe)
                         {
                             if (topPixel == Colors.White)
@@ -211,8 +207,8 @@ namespace Mindsweeper
                         }
                     }
                 }
+                matrixUpToDate = true;
             }
-
         }
 
         private static int ParsePixel(Color pixel)
@@ -254,7 +250,7 @@ namespace Mindsweeper
                 return BombValues.Bomb;
             }
 
-            throw new InvalidOperationException("Unknown square");
+            throw new InvalidOperationException("Unknown tile");
         }
     }
 }
