@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Mindsweeper
+namespace Mindsweeper.Misc
 {
     public static class Clicker
     {

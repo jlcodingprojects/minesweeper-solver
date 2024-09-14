@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Mindsweeper
+namespace Mindsweeper.Misc
 {
     public static class Constants
     {
@@ -18,12 +18,17 @@ namespace Mindsweeper
             public static readonly Color Six = Color.FromArgb(6, 125, 125);
         }
 
+        public static class SmileyFaceColors
+        {
+            public static readonly Color YellowColor = Color.FromArgb(255, 255, 0);
+            public static readonly Color TopOfHeadColor = Color.FromArgb(44, 44, 44);
+        }
+
         public static class BombValues
         {
             public const int Bomb = -2;
             public const int Unknown = -1;
             public const int Safe = 0;
-
         }
     }
 }

@@ -1,14 +1,14 @@
-﻿namespace Mindsweeper
+﻿namespace Mindsweeper.Misc
 {
     public static class CombinatoricsExtensions
     {
-        public static IEnumerable<IEnumerable<T>> AsCombinatorics<T>(this IEnumerable<T> source, int requiredCount)
+        public static IEnumerable<IEnumerable<T>> AsCombinations<T>(this IEnumerable<T> source, int requiredCount)
         {
             var list = source.ToList();
             int count = list.Count;
 
             // need to make this a double if over 32 items but that's fked anyway
-            for (int i = 0; i < (1 << count); i++)
+            for (int i = 0; i < 1 << count; i++)
             {
                 // if number of flags in bitmask is not requiredCount then no need to return that combination
                 if (CountBits(i) != requiredCount) continue;

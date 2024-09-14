@@ -1,10 +1,9 @@
 ﻿using System.Drawing;
-using System.Drawing.Imaging;
 using System.Management;
-using static Mindsweeper.Clicker;
-using static Mindsweeper.Constants;
+using static Mindsweeper.Misc.Clicker;
+using static Mindsweeper.Misc.Constants;
 
-namespace Mindsweeper
+namespace Mindsweeper.Core
 {
     public class BoardEngine
     {
@@ -60,7 +59,7 @@ namespace Mindsweeper
                 {
                     g.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
                 }
-                
+
                 SetBoardPosition(bitmap);
                 SetBoardDimensions(bitmap);
                 var array = new int[Width, Height];
@@ -69,6 +68,7 @@ namespace Mindsweeper
             }
         }
 
+        // Todo - refactor the algorithm stuff here out of the game engine side of things to separate concerns
         public List<Point> GetSafeTiles()
         {
             EnsureMatrixCurrent();
@@ -93,8 +93,8 @@ namespace Mindsweeper
 
             foreach (var tile in tiles)
             {
-                Clicker.ClickAt(_boardPosition.X + (tile.X * _blockSize) + 8,
-                    _boardPosition.Y + (tile.Y * _blockSize) + 8,
+                ClickAt(_boardPosition.X + tile.X * _blockSize + 8,
+                    _boardPosition.Y + tile.Y * _blockSize + 8,
                     clickType);
 
                 Thread.Sleep(20);
@@ -140,13 +140,10 @@ namespace Mindsweeper
             _boardPosition = new Point(posX, posY);
         }
 
-        private static Color color0 = Color.FromArgb(255, 255, 0);
-        private static Color color1 = Color.FromArgb(44, 44, 44);
-
         private bool IsOnSmiley(Bitmap bmp, int x, int y)
         {
-            return (bmp.GetPixel(x, y - 2) == color1
-                        && bmp.GetPixel(x, y) == color0);
+            return bmp.GetPixel(x, y - 2) == SmileyFaceColors.TopOfHeadColor
+                        && bmp.GetPixel(x, y) == SmileyFaceColors.YellowColor;
         }
 
         private static Color border = Color.FromArgb(156, 156, 156);
@@ -197,8 +194,8 @@ namespace Mindsweeper
                 {
                     for (int x = 0; x < Width; x++)
                     {
-                        var centrePixel = bitmap.GetPixel(_boardPosition.X + (x * _blockSize) + offset, _boardPosition.Y + (y * _blockSize) + offset);
-                        var topPixel = bitmap.GetPixel(_boardPosition.X + (x * _blockSize) + 4, _boardPosition.Y + (y * _blockSize));
+                        var centrePixel = bitmap.GetPixel(_boardPosition.X + x * _blockSize + offset, _boardPosition.Y + y * _blockSize + offset);
+                        var topPixel = bitmap.GetPixel(_boardPosition.X + x * _blockSize + 4, _boardPosition.Y + y * _blockSize);
                         _matrix[x, y] = ParsePixel(centrePixel);
                         if (_matrix[x, y] == BombValues.Safe)
                         {

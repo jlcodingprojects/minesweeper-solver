@@ -1,5 +1,7 @@
 ﻿using System.Drawing;
-using static Mindsweeper.Constants;
+using Mindsweeper.Core;
+using Mindsweeper.Misc;
+using static Mindsweeper.Misc.Constants;
 
 namespace Mindsweeper
 {
@@ -62,38 +64,41 @@ namespace Mindsweeper
 
         private static bool TryComplexSolve()
         {
-            var solver = new BoardEngine();
+            var minesweeperEngine = new BoardEngine();
             bool foundAnswers = false;
 
-            var clues = solver.GetAmbivalentClueTiles();
+            var clues = minesweeperEngine.GetAmbivalentClueTiles();
 
             // for each clue, create proxy of all possible combinations
             // then solve surround clues against each proxy
             foreach (var clue in clues)
             {
-                int value = solver.GetMatrix()[clue.X, clue.Y];
-                var neighbours = AlgorithmicSolver.ListUnknownNeighbors(solver.GetMatrix(), clue.X, clue.Y);
-                (int unknownCount, int bombCount) = AlgorithmicSolver.CountNeighbors(solver.GetMatrix(), clue.X, clue.Y);
-
-                var requiredFlags = value - bombCount;
-                var bombCombos = neighbours
-                    .Select(c => new KeyValuePair<Point, int>(c, BombValues.Bomb))
-                    .AsCombinatorics(requiredFlags);
-
                 bool initialised = false;
                 var safeFound = new HashSet<Point>();
                 var dangerousFound = new HashSet<Point>();
 
+                // The number of adjacent bombs
+                int value = minesweeperEngine.GetMatrix()[clue.X, clue.Y];
+                var unknownAdjacentTiles = AlgorithmicSolver.ListUnknownAdjacentTiles(minesweeperEngine.GetMatrix(), clue.X, clue.Y);
+                (int unknownCount, int bombCount) = AlgorithmicSolver.CountAdjacentTiles(minesweeperEngine.GetMatrix(), clue.X, clue.Y);
+                var remainingAdjacentBombs = value - bombCount;
+
+                // For all adjacent tiles, return every possible valid combination of bombs
+                var bombCombos = unknownAdjacentTiles
+                    .Select(c => new KeyValuePair<Point, int>(c, BombValues.Bomb))
+                    .AsCombinations(remainingAdjacentBombs);
+
                 foreach (var combination in bombCombos)
                 {
-                    solver.UseProxy(combination);
+                    // Temporarily proxy the matrix with this combination while we check if the game is still valid
+                    minesweeperEngine.UseProxy(combination);
 
-                    bool isValid = AlgorithmicSolver.IsBoardValid(solver.GetMatrix());
+                    bool isValid = AlgorithmicSolver.IsMatrixValid(minesweeperEngine.GetMatrix());
                     if (!isValid)
                         continue;
 
-                    var dangerous = solver.GetDangerousTiles();
-                    var safe = solver.GetSafeTiles();
+                    var dangerous = minesweeperEngine.GetDangerousTiles();
+                    var safe = minesweeperEngine.GetSafeTiles();
 
                     if (initialised)
                     {
@@ -112,8 +117,8 @@ namespace Mindsweeper
 
                 if (safeFound.Count != 0 || dangerousFound.Count != 0)
                 {
-                    solver.ClickAllTiles(dangerousFound.ToList(), Clicker.ClickType.Right);
-                    solver.ClickAllTiles(safeFound.ToList(), Clicker.ClickType.Left);
+                    minesweeperEngine.ClickAllTiles(dangerousFound.ToList(), Clicker.ClickType.Right);
+                    minesweeperEngine.ClickAllTiles(safeFound.ToList(), Clicker.ClickType.Left);
                     foundAnswers = true;
                 }
             }

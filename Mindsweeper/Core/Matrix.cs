@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Mindsweeper
+namespace Mindsweeper.Core
 {
     public interface IMatrix
     {
